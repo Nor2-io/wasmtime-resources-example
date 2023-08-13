@@ -1,6 +1,7 @@
 use wasmtime::component::*;
 use wasmtime::{Config, Engine, Store};
 
+//TODO: Change resources from hashmap to allow for more than one implementation of the same resource type
 bindgen!({
     path: "./example2.wit",
     resources: {
@@ -20,6 +21,7 @@ impl crate::example2::component::backend::Host for Host {
 #[derive(Debug, Default)]
 pub struct State {
     host: Host,
+    //TODO: Add proc macro to automatically implement ResourceTable and add table to store state
     scalars_table: std::collections::HashMap<u32, ImplScalars>,
 }
 
@@ -74,8 +76,6 @@ impl wasmtime::component::ResourceTable<ImplScalars> for State {
 
 #[tokio::main]
 async fn main() -> wasmtime::Result<()> {
-    // Configure an `Engine` and compile the `Component` that is being run for
-    // the application.
     let mut config = Config::new();
     config.wasm_component_model(true);
 

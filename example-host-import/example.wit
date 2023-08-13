@@ -1,4 +1,4 @@
-package example:component
+package example:component@0.1.0
 
 /// An example backend interface.
 interface backend {
@@ -24,4 +24,5 @@ interface backend {
 world example {
     export backend
 }
+
 
