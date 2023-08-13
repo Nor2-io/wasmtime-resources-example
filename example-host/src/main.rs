@@ -2,7 +2,7 @@ use wasmtime::component::*;
 use wasmtime::{Config, Engine, Store};
 
 bindgen!({
-    path: "../example-guest-import/wit/example2.wit",
+    path: "./example2.wit",
     resources: {
         "scalars": ImplScalars
     }
