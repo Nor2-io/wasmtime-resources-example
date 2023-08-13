@@ -1,0 +1,27 @@
+package example:component
+
+/// An example cache interface.
+interface cache {
+    /// Get a value from the cache.
+    get: func(key: string) -> option<list<u8>>
+
+    /// Put a value into the cache.
+    put: func(key: string, value: list<u8>)
+}
+
+
+interface backend {
+    fetch: func(url: string) -> list<u8>
+    resource scalars {
+        constructor()
+        get-a: static func() -> u32
+        get-b: func() -> u32
+
+    }
+
+    scalar-arg: func(x: borrow<scalars>) -> u32
+}
+
+world example {
+    export backend
+}

@@ -1,0 +1,20 @@
+[package]
+name = "example-guest-import"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+cargo-component-bindings = { git = "https://github.com/Nor2-io/cargo-component" }
+
+[package.metadata.component]
+package = "example:component"
+
+[package.metadata.component.target]
+path = "wit"
+
+[package.metadata.component.dependencies]
+
+[workspace]
