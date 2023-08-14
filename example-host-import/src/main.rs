@@ -3,7 +3,7 @@ use wasmtime::component::*;
 use wasmtime::{Config, Engine, Store};
 
 bindgen!({
-    path: "../example.wit",
+    path: "./example.wit",
 });
 
 #[tokio::main]
@@ -21,6 +21,7 @@ async fn main() -> wasmtime::Result<()> {
 
     let resource = RepScalars::new(&mut store, &instance).unwrap();
 
+    //TODO: Fix so you can pass any resource representation implementing the trait and `ToHandle`
     let test = bindings
         .interface0
         .call_scalar_arg(&mut store, resource.handle)
