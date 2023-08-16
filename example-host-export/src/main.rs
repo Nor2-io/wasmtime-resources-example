@@ -26,17 +26,20 @@ pub struct State {
 }
 
 #[derive(Debug, Default)]
-pub struct ImplScalars;
+pub struct ImplScalars; // Fwiw in wasi i have been calling these structs HostScalars
 
-impl crate::example2::component::backend::Scalars for ImplScalars {
+// I think we need this trait to also give us access to `State` some way or another (or, really, the `Host` element in state)
+// Maybe it needs an associated type `type Context = Host`?
+impl crate::example2::component::backend::Scalars for ImplScalars { 
     fn new() -> wasmtime::Result<Self>
+    // In particular I would expect to need a `&mut Host` in order to write a useful constructor here.
     where
         Self: Sized,
     {
         Ok(ImplScalars)
     }
 
-    fn method_scalars_get_b(&self) -> wasmtime::Result<u32>
+    fn method_scalars_get_b(&self) -> wasmtime::Result<u32> // I would expect this to take &mut self
     where
         Self: Sized,
     {
@@ -45,6 +48,7 @@ impl crate::example2::component::backend::Scalars for ImplScalars {
 }
 
 impl wasmtime::component::ResourceTable<ImplScalars> for State {
+    // just curious why there is both a shared and mut getter. Where does the mut getter end up being used? the above method takes &self
     fn get_resource(&self, handle: wasmtime::component::Resource<ImplScalars>) -> &ImplScalars {
         self.scalars_table.get(&handle.rep()).unwrap()
     }
