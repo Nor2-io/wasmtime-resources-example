@@ -1,3 +1,4 @@
+use anyhow::anyhow;
 use wasmtime::component::*;
 use wasmtime::{Config, Engine, Store};
 
@@ -45,32 +46,44 @@ impl crate::example2::component::backend::Scalars for ImplScalars {
 }
 
 impl wasmtime::component::ResourceTable<ImplScalars> for State {
-    fn get_resource(&self, handle: wasmtime::component::Resource<ImplScalars>) -> &ImplScalars {
-        self.scalars_table.get(&handle.rep()).unwrap()
+    fn get_resource(
+        &self,
+        handle: wasmtime::component::Resource<ImplScalars>,
+    ) -> wasmtime::Result<&ImplScalars> {
+        Ok(self
+            .scalars_table
+            .get(&handle.rep())
+            .ok_or(anyhow!("No resource with id `{}`", handle.rep()))?)
     }
 
     fn new_resource(
         &mut self,
         resource: ImplScalars,
-    ) -> wasmtime::component::Resource<ImplScalars> {
+    ) -> wasmtime::Result<wasmtime::component::Resource<ImplScalars>> {
         let handle =
             wasmtime::component::Resource::<ImplScalars>::new_own(self.scalars_table.len() as u32);
         self.scalars_table.insert(handle.rep(), resource);
 
-        handle
+        Ok(handle)
     }
 
     fn get_resource_mut(
         &mut self,
         handle: wasmtime::component::Resource<ImplScalars>,
-    ) -> &mut ImplScalars {
-        self.scalars_table.get_mut(&handle.rep()).unwrap()
+    ) -> wasmtime::Result<&mut ImplScalars> {
+        Ok(self
+            .scalars_table
+            .get_mut(&handle.rep())
+            .ok_or(anyhow!("No resource with id `{}`", handle.rep()))?)
     }
 
-    fn drop_resource(&mut self, rep: u32) {
-        self.scalars_table
-            .remove(&rep)
-            .unwrap_or_else(|| panic!("tried to drop a resource that doesn't exist"));
+    fn drop_resource(&mut self, rep: u32) -> wasmtime::Result<()> {
+        self.scalars_table.remove(&rep).ok_or(anyhow!(
+            "tried to drop a resource `{}` that doesn't exist",
+            rep
+        ))?;
+
+        Ok(())
     }
 }
 
