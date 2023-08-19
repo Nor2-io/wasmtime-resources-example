@@ -7,7 +7,8 @@ bindgen!({
     path: "./example2.wit",
     resources: {
         "scalars": ImplScalars
-    }
+    },
+    resource_mode: Object,
 });
 
 #[derive(Debug, Default)]

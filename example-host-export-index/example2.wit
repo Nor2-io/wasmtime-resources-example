@@ -1,0 +1,22 @@
+package example2:component@0.1.0
+
+interface backend {
+    resource scalars {
+        constructor()
+        get-b: func() -> u32
+
+    }
+
+    fetch: func(url: string) -> list<u8>
+}
+
+interface front {
+    use backend.{scalars}
+
+    handle: func(x: own<scalars>) -> u32
+}
+
+world example2 {
+    import backend
+    export front
+}

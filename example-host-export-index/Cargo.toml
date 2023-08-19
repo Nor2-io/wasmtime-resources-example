@@ -1,0 +1,19 @@
+[package]
+name = "example-host-export-index"
+version = "0.1.0"
+edition = "2021"
+authors = [""]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = { version = "1.28.1", features = ["full"] }
+eyre = "0.6.8"
+log = "0.4"
+anyhow = "1.0.75"
+
+wasmtime = { git = "https://github.com/Nor2-io/wasmtime", branch = "resources", features = [
+    "component-model",
+    "async",
+] }
+wasmtime-wasi = { git = "https://github.com/Nor2-io/wasmtime", branch = "resources" }
