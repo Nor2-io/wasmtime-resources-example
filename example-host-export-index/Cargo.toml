@@ -12,8 +12,8 @@ eyre = "0.6.8"
 log = "0.4"
 anyhow = "1.0.75"
 
-wasmtime = { git = "https://github.com/Nor2-io/wasmtime", branch = "resources", features = [
+wasmtime = { git = "https://github.com/Nor2-io/wasmtime", branch = "resources-basic", features = [
     "component-model",
     "async",
 ] }
-wasmtime-wasi = { git = "https://github.com/Nor2-io/wasmtime", branch = "resources" }
+wasmtime-wasi = { git = "https://github.com/Nor2-io/wasmtime", branch = "resources-basic" }
